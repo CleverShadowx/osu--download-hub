@@ -85,6 +85,9 @@ def download_beatmaps(beatmaps, output_dir):
 
     time.sleep(5)
 
+def confirm_download(maps_amount):
+    user_input = input(f"You are about to download {maps_amount} beatmaps, proceed? (Y/n): ").strip().lower()
+    return user_input == 'y'
 
 def get_user_top_plays(username, top_plays_count):
     beatmaps = [
@@ -115,7 +118,6 @@ def get_map_name(data):
 
     return map_name
 
-
 def main():
     args = parse_args()
 
@@ -133,9 +135,12 @@ def main():
         beatmaps = get_user_maps(username, maps_type, maps_amount)
     else:
         return
+    
+    if not confirm_download(len(beatmaps)):
+        print("Download cancelled.")
+        return
 
     download_beatmaps(beatmaps, output_dir)
-
 
 if __name__ == "__main__":
     main()
